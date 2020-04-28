@@ -37,7 +37,7 @@ Starting in Visual Studio 2015, you do not install the Visual Studio SDK from th
 
 ## Create a menu on the IDE menu bar
 
-::: moniker range="vs-2017"
+::: moniker range=">=vs-2019"
 
 1. In **Solution Explorer**, open *TestCommandPackage.vsct*.
 
@@ -82,7 +82,7 @@ Starting in Visual Studio 2015, you do not install the Visual Studio SDK from th
 
 ::: moniker-end
 
-::: moniker range=">=vs-2019"
+::: moniker range="vs-2017"
 
 1. In **Solution Explorer**, open *TopLevelMenuPackage.vsct*.
 
