@@ -29,12 +29,13 @@ This walkthrough shows how to add a toolbar to the Visual Studio IDE.
 
 ## Create a toolbar for the IDE
 
+::: moniker range="vs-2017"
+
 1. In *ToolbarTestCommandPackage.vsct*, look for the Symbols section. In the GuidSymbol element named guidToolbarTestCommandPackageCmdSet, add declarations for a toolbar and a toolbar group, as follows.
 
     ```xml
     <IDSymbol name="Toolbar" value="0x1000" />
     <IDSymbol name="ToolbarGroup" value="0x1050" />
-
     ```
 
 2. At the top of the Commands section, create a Menus section. Add a Menu element to the Menus section to define your toolbar.
@@ -67,7 +68,7 @@ This walkthrough shows how to add a toolbar to the Visual Studio IDE.
 
     ```xml
     <Button guid="guidToolbarTestCommandPackageCmdSet" id="ToolbarTestCommandId" priority="0x0100" type="Button">
-        <Parent guid= "guidToolbarTestCommandPackageCmdSet" id="ToolbarGroup" />
+        <Parent guid="guidToolbarTestCommandPackageCmdSet" id="ToolbarGroup" />
                 <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
             <ButtonText>Invoke ToolbarTestCommand</ButtonText>
@@ -76,6 +77,58 @@ This walkthrough shows how to add a toolbar to the Visual Studio IDE.
     ```
 
      By default, if a toolbar has no commands, it does not appear.
+     
+::: moniker-end
+::: moniker range=">=vs-2019"
+
+1. In *IDEToolbarPackage.vsct*, look for the Symbols section. In the GuidSymbol element named guidToolbarTestCommandPackageCmdSet, add declarations for a toolbar and a toolbar group, as follows.
+
+    ```xml
+    <IDSymbol name="Toolbar" value="0x1000" />
+    <IDSymbol name="ToolbarGroup" value="0x1050" />
+    ```
+
+2. At the top of the Commands section, create a Menus section. Add a Menu element to the Menus section to define your toolbar.
+
+    ```xml
+    <Menus>
+        <Menu guid="guidIDEToolbarPackageCmdSet" id="Toolbar"
+            type="Toolbar" >
+            <CommandFlag>DefaultDocked</CommandFlag>
+            <Strings>
+                <ButtonText>Test Toolbar</ButtonText>
+                <CommandName>Test Toolbar</CommandName>
+            </Strings>
+          </Menu>
+    </Menus>
+    ```
+
+     Toolbars cannot be nested like submenus. Therefore, you do not have to assign a parent group. Also, you do not have to set a priority, because the user can move toolbars. Typically, initial placement of a toolbar is defined programmatically, but subsequent changes by the user are persisted.
+
+3. In the [Groups](../extensibility/groups-element.md) section, after the existing group entry, define a [Group](../extensibility/group-element.md) element to contain the commands for the toolbar.
+
+    ```xml
+    <Group guid="guidIDEToolbarPackageCmdSet" id="ToolbarGroup"
+          priority="0x0000">
+      <Parent guid="guidToolbarTestCommandPackageCmdSet" id="Toolbar"/>
+    </Group>
+    ```
+
+4. Make the button appear on the toolbar. In the Buttons section, replace the Parent block in the Button to the toolbar. The resulting Button block should look like this:
+
+    ```xml
+    <Button guid="guidIDEToolbarPackageCmdSet" id="ToolbarTestCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidToolbarTestCommandPackageCmdSet" id="ToolbarGroup" />
+                <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+            <ButtonText>Invoke ToolbarTestCommand</ButtonText>
+        </Strings>
+    </Button>
+    ```
+
+     By default, if a toolbar has no commands, it does not appear.
+     
+::: moniker-end
 
 5. Build the project and start debugging. The experimental instance should appear.
 
